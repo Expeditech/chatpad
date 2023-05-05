@@ -7,7 +7,7 @@ import {
   Flex,
   Table,
   Text,
-  ThemeIcon,
+  Avatar,
   Tooltip,
 } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
@@ -20,6 +20,7 @@ import "../styles/markdown.scss";
 import { CreatePromptModal } from "./CreatePromptModal";
 import { LogoIcon } from "./Logo";
 import { ScrollIntoView } from "./ScrollIntoView";
+import { getUserLetters, getActiveAccount } from "../utils/auth";
 
 export function MessageItem({ message }: { message: Message }) {
   const clipboard = useClipboard({ timeout: 500 });
@@ -33,9 +34,7 @@ export function MessageItem({ message }: { message: Message }) {
       <Card withBorder>
         <Flex gap="sm">
           {message.role === "user" && (
-            <ThemeIcon color="gray" size="lg">
-              <IconUser size={20} />
-            </ThemeIcon>
+            <Avatar color="cyan" radius="xl" alt={getActiveAccount()?.name}>{getUserLetters()}</Avatar>
           )}
           {message.role === "assistant" && <LogoIcon style={{ height: 32 }} />}
           <Box sx={{ flex: 1, width: 0 }} className="markdown">

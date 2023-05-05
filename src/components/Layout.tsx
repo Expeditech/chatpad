@@ -40,6 +40,9 @@ import { DatabaseModal } from "./DatabaseModal";
 import { LogoText } from "./Logo";
 import { Prompts } from "./Prompts";
 import { SettingsModal } from "./SettingsModal";
+import { SSOLogout } from "./SSOLogout";
+import { msalInstance, isSignedIn } from "../utils/auth";
+import { SSOLogin } from "./SSOLogin";
 
 declare global {
   interface Window {
@@ -76,6 +79,11 @@ export function Layout() {
       navbarOffsetBreakpoint="sm"
       navbar={
         <Navbar width={{ md: 300 }} hiddenBreakpoint="md" hidden={!opened}>
+          {isSignedIn() && (<Navbar.Section>
+            <Box sx={{ padding: 4 }}>
+              <SSOLogout msalInstance={msalInstance} ></SSOLogout>
+            </Box>
+          </Navbar.Section>)}
           <Navbar.Section className="app-region-drag">
             <Box
               style={{
@@ -178,12 +186,12 @@ export function Layout() {
               }
             />
           </Navbar.Section>
-          <Navbar.Section grow component={ScrollArea}>
+          {isSignedIn() && (<Navbar.Section grow component={ScrollArea}>
             {tab === "Chats" && <Chats search={search} />}
             {tab === "Prompts" && (
               <Prompts search={search} onPlay={() => setTab("Chats")} />
             )}
-          </Navbar.Section>
+          </Navbar.Section>)}
           <Navbar.Section sx={{ borderTop: border }} p="xs">
             <Center>
               <Tooltip
@@ -282,6 +290,9 @@ export function Layout() {
       layout="alt"
       padding={0}
     >
+      {!isSignedIn() && (
+        <SSOLogin msalInstance={msalInstance} />
+      )}
       <MediaQuery largerThan="md" styles={{ display: "none" }}>
         <Burger
           opened={opened}
