@@ -21,8 +21,12 @@ import { CreatePromptModal } from "./CreatePromptModal";
 import { LogoIcon } from "./Logo";
 import { ScrollIntoView } from "./ScrollIntoView";
 import { getUserLetters, getActiveAccount } from "../utils/auth";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useMantineTheme } from '@mantine/core';
 
 export function MessageItem({ message }: { message: Message }) {
+  const theme = useMantineTheme();
   const clipboard = useClipboard({ timeout: 500 });
   const wordCount = useMemo(() => {
     var matches = message.content.match(/[\w\d\’\'-\(\)]+/gi);
@@ -45,12 +49,21 @@ export function MessageItem({ message }: { message: Message }) {
                 table: ({ node, ...props }) => (
                   <Table verticalSpacing="sm" highlightOnHover {...props} />
                 ),
-                code: ({ node, inline, ...props }) =>
+                code: ({ node, inline, className, ...props }) =>
                   inline ? (
                     <Code {...props} />
                   ) : (
                     <Box sx={{ position: "relative" }}>
-                      <Code block {...props} />
+                      {className ? (
+                      <SyntaxHighlighter
+                        {...props}
+                        children={String(props.children).replace(/\n$/, '')}                        
+                        language={className?.replace("language-", "").replace("++", "")}
+                        style={theme.colorScheme === "dark" ? oneDark : oneLight}
+                        PreTag="div"
+                      />) : (
+                        <Code block {...props} />
+                      )}
                       <CopyButton value={String(props.children)}>
                         {({ copied, copy }) => (
                           <Tooltip
