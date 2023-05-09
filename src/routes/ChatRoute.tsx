@@ -60,6 +60,7 @@ export function ChatRoute() {
       message.push(
         "You are ChatGPT, a large language model trained by OpenAI."
       );
+    message.push(`All code blocks must include the programming language as part of the markdown response.`);
     return message.join(" ");
   };
 
