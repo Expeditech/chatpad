@@ -22,7 +22,7 @@ import { LogoIcon } from "./Logo";
 import { ScrollIntoView } from "./ScrollIntoView";
 import { getUserLetters, getActiveAccount } from "../utils/auth";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useMantineTheme } from '@mantine/core';
 
 export function MessageItem({ message }: { message: Message }) {
@@ -31,7 +31,7 @@ export function MessageItem({ message }: { message: Message }) {
   const wordCount = useMemo(() => {
     var matches = message.content.match(/[\w\d\’\'-\(\)]+/gi);
     return matches ? matches.length : 0;
-  }, [message.content]);
+  }, [message.content]);  
 
   return (
     <ScrollIntoView>
@@ -58,8 +58,8 @@ export function MessageItem({ message }: { message: Message }) {
                       <SyntaxHighlighter
                         {...props}
                         children={String(props.children).replace(/\n$/, '')}                        
-                        language={className?.replace("language-", "").replace("++", "")}
-                        style={theme.colorScheme === "dark" ? oneDark : oneLight}
+                        language={className?.toLowerCase().replace("language-", "").replace("++", "")}
+                        style={theme.colorScheme === "dark" ? vscDarkPlus : vs}
                         PreTag="div"
                       />) : (
                         <Code block {...props} />

@@ -47,6 +47,7 @@ export class Database extends Dexie {
     this.on("populate", async () => {
       db.settings.add({
         id: "general",
+        openAiApiKey: (process.env.OPENAI_KEY) ?? "",
       });
     });
   }
