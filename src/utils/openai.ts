@@ -38,10 +38,16 @@ export async function createStreamChatCompletion(
         },
         onError(error, stream) {
           console.error(error);
+          setErrorContent(messageId, error);
         },
       },
     }
   );
+}
+
+function setErrorContent(messageId:string, error:any){
+  let content = "An error ocurred when receiving the message. Please try again!"
+  db.messages.update(messageId, {content: content})
 }
 
 function setStreamContent(messageId:string, content:string, isFinal:boolean){
