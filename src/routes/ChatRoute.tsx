@@ -1,23 +1,18 @@
 import {
   Box,
-  Button,
   Card,
   Container,
-  Flex,
-  MediaQuery,
   Select,
   SimpleGrid,
   Skeleton,
   Stack,
-  Textarea,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useLiveQuery } from "dexie-react-hooks";
-import { findLast } from "lodash";
 import { nanoid } from "nanoid";
 import { useState } from "react";
-import { AiOutlineSend } from "react-icons/ai";
 import { MessageItem } from "../components/MessageItem";
+import { ChatInput } from "../components/ChatInput"
 import { db } from "../db";
 import { useChatId } from "../hooks/useChatId";
 import {
@@ -37,7 +32,6 @@ export function ChatRoute() {
     if (!chatId) return [];
     return db.messages.where("chatId").equals(chatId).sortBy("createdAt");
   }, [chatId]);
-  const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const chat = useLiveQuery(async () => {
@@ -64,7 +58,7 @@ export function ChatRoute() {
     return message.join(" ");
   };
 
-  const submit = async () => {
+  const submit = async (content: string) => {
     if (submitting) return;
 
     if (!chatId) {
@@ -94,8 +88,7 @@ export function ChatRoute() {
         content,
         role: "user",
         createdAt: new Date(),
-      });
-      setContent("");
+      });      
 
       const messageId = nanoid()
       await db.messages.add({
@@ -263,61 +256,7 @@ export function ChatRoute() {
               />
             </SimpleGrid>
           )}
-          <Flex gap="sm">
-            <Textarea
-              key={chatId}
-              sx={{ flex: 1 }}
-              placeholder="Your message here..."
-              autosize
-              autoFocus
-              disabled={submitting}
-              minRows={1}
-              maxRows={5}
-              value={content}
-              onChange={(event) => setContent(event.currentTarget.value)}
-              onKeyDown={async (event) => {
-                if (event.code === "Enter" && !event.shiftKey) {
-                  event.preventDefault();
-                  submit();
-                }
-                if (event.code === "ArrowUp") {
-                  const { selectionStart, selectionEnd } = event.currentTarget;
-                  if (selectionStart !== selectionEnd) return;
-                  if (selectionStart !== 0) return;
-                  event.preventDefault();
-                  const nextUserMessage = findLast(
-                    messages,
-                    (message) => message.role === "user"
-                  );
-                  setContent(nextUserMessage?.content ?? "");
-                }
-                if (event.code === "ArrowDown") {
-                  const { selectionStart, selectionEnd } = event.currentTarget;
-                  if (selectionStart !== selectionEnd) return;
-                  if (selectionStart !== event.currentTarget.value.length)
-                    return;
-                  event.preventDefault();
-                  const lastUserMessage = findLast(
-                    messages,
-                    (message) => message.role === "user"
-                  );
-                  if (lastUserMessage?.content === content) {
-                    setContent("");
-                  }
-                }
-              }}
-            />
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Button
-                h="auto"
-                onClick={() => {
-                  submit();
-                }}
-              >
-                <AiOutlineSend />
-              </Button>
-            </MediaQuery>
-          </Flex>
+          <ChatInput submitting={submitting} onSubmit={submit} chatId={chatId} />
         </Container>
       </Box>
     </>
