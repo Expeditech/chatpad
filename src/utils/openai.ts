@@ -3,6 +3,7 @@ import { db } from "../db";
 import { defaultModel } from "./constants";
 import { OpenAIExt } from "openai-ext";
 import { encode } from 'gpt-token-utils'
+import { auditChat } from "./audit";
 
 function getClient(apiKey: string) {
   const configuration = new Configuration({
@@ -34,7 +35,8 @@ export async function createStreamChatCompletion(
             setTotalTokens(chatId, content);
           }
         },
-        onDone(stream) {          
+        onDone(stream) {        
+            auditChat(chatId);
         },
         onError(error, stream) {
           console.error(error);

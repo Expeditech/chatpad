@@ -6,6 +6,9 @@ export interface Chat {
   description: string;
   totalTokens: number;
   createdAt: Date;
+  tenantId?: string;
+  username?: string;
+  localAccountId?: string;
 }
 
 export interface Message {

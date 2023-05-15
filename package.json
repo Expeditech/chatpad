@@ -20,6 +20,7 @@
     "process": "^0.11.10"
   },
   "dependencies": {
+    "@azure/cosmos": "^3.17.3",
     "@azure/msal-browser": "^2.37.0",
     "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",

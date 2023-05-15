@@ -41,7 +41,7 @@ import { LogoText } from "./Logo";
 import { Prompts } from "./Prompts";
 import { SettingsModal } from "./SettingsModal";
 import { SSOLogout } from "./SSOLogout";
-import { msalInstance, isSignedIn } from "../utils/auth";
+import { msalInstance, isSignedIn, getActiveAccount } from "../utils/auth";
 import { SSOLogin } from "./SSOLogin";
 
 declare global {
@@ -72,6 +72,7 @@ export function Layout() {
   useEffect(() => {
     setOpened(false);
   }, [router.state.location]);
+  const activeAccount = getActiveAccount();
 
   return (
     <AppShell
@@ -146,7 +147,10 @@ export function Layout() {
                       id,
                       description: "New Chat",
                       totalTokens: 0,
-                      createdAt: new Date(),
+                      createdAt: new Date(),                      
+                      tenantId: activeAccount?.tenantId,
+                      username: activeAccount?.username,
+                      localAccountId: activeAccount?.localAccountId
                     });
                     navigate({ to: `/chats/${id}` });
                   }}
