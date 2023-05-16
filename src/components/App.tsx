@@ -49,7 +49,10 @@ export function App() {
           withCSSVariables
           theme={{
             colorScheme,
-            primaryColor: "teal",
+            colors: {
+              expd : ['#e0e8ff', '#b0bfff', '#7f99ff', '#4d76ff', '#1e57fe', '#0745e5', '#003bb3', '#002181', '#000e50', '#000220'],
+            },
+            primaryColor: "expd",
             globalStyles: (theme) => ({
               body: {
                 backgroundColor:

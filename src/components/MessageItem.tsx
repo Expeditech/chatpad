@@ -18,7 +18,7 @@ import remarkGfm from "remark-gfm";
 import { Message } from "../db";
 import "../styles/markdown.scss";
 import { CreatePromptModal } from "./CreatePromptModal";
-import { LogoIcon } from "./Logo";
+import { LogoIcon, LogoIconLight } from "./Logo";
 import { ScrollIntoView } from "./ScrollIntoView";
 import { getUserLetters, getActiveAccount } from "../utils/auth";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -40,7 +40,7 @@ export function MessageItem({ message }: { message: Message }) {
           {message.role === "user" && (
             <Avatar color="cyan" radius="xl" alt={getActiveAccount()?.name}>{getUserLetters()}</Avatar>
           )}
-          {message.role === "assistant" && <LogoIcon style={{ height: 45 }} />}
+          {message.role === "assistant" && (theme.colorScheme === "dark" ? <LogoIconLight style={{ height: 45 }} /> : <LogoIcon style={{ height: 45 }} />)}
           <Box sx={{ flex: 1, width: 0 }} className="markdown">
             <ReactMarkdown
               children={message.content}

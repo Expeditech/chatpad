@@ -37,7 +37,7 @@ import { useChatId } from "../hooks/useChatId";
 import { Chats } from "./Chats";
 import { CreatePromptModal } from "./CreatePromptModal";
 import { DatabaseModal } from "./DatabaseModal";
-import { LogoText } from "./Logo";
+import { LogoText, LogoTextLight } from "./Logo";
 import { Prompts } from "./Prompts";
 import { SettingsModal } from "./SettingsModal";
 import { msalInstance, isSignedIn, getActiveAccount } from "../utils/auth";
@@ -101,13 +101,24 @@ export function Layout() {
                 className="app-region-no-drag"
                 style={{ marginTop: 10, padding: 4 }}
               >
+              {theme.colorScheme === "dark" ?
+                <LogoTextLight
+                style={{
+                  height: 150,
+                  maxWidth: 205,
+                  color: "#27B882",
+                  display: "block",
+                }}
+              />
+              :
                 <LogoText
                   style={{
-                    height: 22,
+                    height: 150,
                     color: "#27B882",
                     display: "block",
                   }}
                 />
+              }              
               </Link>
               <MediaQuery largerThan="md" styles={{ display: "none" }}>
                 <Burger
