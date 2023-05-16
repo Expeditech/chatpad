@@ -40,7 +40,7 @@ export function MessageItem({ message }: { message: Message }) {
           {message.role === "user" && (
             <Avatar color="cyan" radius="xl" alt={getActiveAccount()?.name}>{getUserLetters()}</Avatar>
           )}
-          {message.role === "assistant" && <LogoIcon style={{ height: 32 }} />}
+          {message.role === "assistant" && <LogoIcon style={{ height: 45 }} />}
           <Box sx={{ flex: 1, width: 0 }} className="markdown">
             <ReactMarkdown
               children={message.content}

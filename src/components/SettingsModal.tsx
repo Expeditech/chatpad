@@ -43,73 +43,58 @@ export function SettingsModal({ children }: { children: ReactElement }) {
       {cloneElement(children, { onClick: open })}
       <Modal opened={opened} onClose={close} title="Settings" size="lg">
         <Stack>
-          <form
-            onSubmit={async (event) => {
-              try {
-                setSubmitting(true);
-                event.preventDefault();
-                await checkOpenAIKey(value);
-                await db.settings.where({ id: "general" }).modify((apiKey) => {
-                  apiKey.openAiApiKey = value;
-                  console.log(apiKey);
-                });
-                notifications.show({
-                  title: "Saved",
-                  message: "Your OpenAI Key has been saved.",
-                });
-              } catch (error: any) {
-                if (error.toJSON().message === "Network Error") {
-                  notifications.show({
-                    title: "Error",
-                    color: "red",
-                    message: "No internet connection.",
-                  });
-                }
-                const message = error.response?.data?.error?.message;
-                if (message) {
-                  notifications.show({
-                    title: "Error",
-                    color: "red",
-                    message,
-                  });
-                }
-              } finally {
-                setSubmitting(false);
-              }
-            }}
-          >
-            <Flex gap="xs" align="end">
-              <PasswordInput
-                label="OpenAI API Key"
-                placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                sx={{ flex: 1 }}
-                value={value}
-                onChange={(event) => setValue(event.currentTarget.value)}
-                formNoValidate
-              />
-              <Button type="submit" loading={submitting}>
-                Save
-              </Button>
-            </Flex>
-          </form>
-          <List withPadding>
-            <List.Item>
-              <Text size="sm">
-                <Anchor
-                  href="https://platform.openai.com/account/api-keys"
-                  target="_blank"
-                >
-                  Get your OpenAI API key
-                </Anchor>
-              </Text>
-            </List.Item>
-            <List.Item>
-              <Text size="sm" color="dimmed">
-                The API Key is stored locally on your browser and never sent
-                anywhere else.
-              </Text>
-            </List.Item>
-          </List>
+          {
+          //  <form
+          //  onSubmit={async (event) => {
+          //    try {
+          //      setSubmitting(true);
+          //      event.preventDefault();
+          //      await checkOpenAIKey(value);
+          //      await db.settings.where({ id: "general" }).modify((apiKey) => {
+          //        apiKey.openAiApiKey = value;
+          //        console.log(apiKey);
+          //      });
+          //      notifications.show({
+          //        title: "Saved",
+          //        message: "Your OpenAI Key has been saved.",
+          //      });
+          //    } catch (error: any) {
+          //      if (error.toJSON().message === "Network Error") {
+          //        notifications.show({
+          //          title: "Error",
+          //          color: "red",
+          //          message: "No internet connection.",
+          //        });
+          //      }
+          //      const message = error.response?.data?.error?.message;
+          //      if (message) {
+          //        notifications.show({
+          //          title: "Error",
+          //          color: "red",
+          //          message,
+          //        });
+          //      }
+          //    } finally {
+          //      setSubmitting(false);
+          //    }
+          //  }}
+          //>
+          //  <Flex gap="xs" align="end">
+          //    <PasswordInput
+          //      label="OpenAI API Key"
+          //      placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          //      sx={{ flex: 1 }}
+          //      value={value}
+          //      onChange={(event) => setValue(event.currentTarget.value)}
+          //      formNoValidate
+          //    />
+          //    <Button type="submit" loading={submitting}>
+          //      Save
+          //    </Button>
+          //  </Flex>
+          //</form>
+          }
+          
           <Select
             label="OpenAI Model"
             value={model}

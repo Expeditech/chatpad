@@ -5,22 +5,22 @@ import {
   Burger,
   Button,
   Center,
+  Group,
   Header,
   MediaQuery,
   Navbar,
   rem,
   ScrollArea,
   SegmentedControl,
+  Text,
   TextInput,
   Tooltip,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
 import {
-  IconBrandGithub,
-  IconBrandTwitter,
   IconDatabase,
-  IconMessage,
+  IconLogout,
   IconMoonStars,
   IconPlus,
   IconSearch,
@@ -40,7 +40,6 @@ import { DatabaseModal } from "./DatabaseModal";
 import { LogoText } from "./Logo";
 import { Prompts } from "./Prompts";
 import { SettingsModal } from "./SettingsModal";
-import { SSOLogout } from "./SSOLogout";
 import { msalInstance, isSignedIn, getActiveAccount } from "../utils/auth";
 import { SSOLogin } from "./SSOLogin";
 
@@ -81,8 +80,10 @@ export function Layout() {
       navbar={
         <Navbar width={{ md: 300 }} hiddenBreakpoint="md" hidden={!opened}>
           {isSignedIn() && (<Navbar.Section>
-            <Box sx={{ padding: 4 }}>
-              <SSOLogout msalInstance={msalInstance} ></SSOLogout>
+            <Box sx={{ padding: 4 }}>              
+              <Group position="center">
+                <Text fz="md">Welcome, { msalInstance.getActiveAccount()?.name }</Text>    
+              </Group>
             </Box>
           </Navbar.Section>)}
           <Navbar.Section className="app-region-drag">
@@ -227,47 +228,21 @@ export function Layout() {
                   </ActionIcon>
                 </Tooltip>
               </DatabaseModal>
-              <Tooltip label="Source Code">
-                <ActionIcon
-                  component="a"
-                  href="https://github.com/deiucanta/chatpad"
-                  target="_blank"
-                  sx={{ flex: 1 }}
-                  size="xl"
-                >
-                  <IconBrandGithub size={20} />
+              <Tooltip label="Log out">
+                <ActionIcon sx={{ flex: 1 }} size="xl">
+                  <IconLogout 
+                    size={20}
+                    onClick={async () => {
+                      try {
+                        await msalInstance.logoutPopup();
+                        navigate({ to: '/', replace: true })
+                      } catch (error) {
+                        console.log(error);
+                      }
+                    }}>
+                  </IconLogout>
                 </ActionIcon>
-              </Tooltip>
-              <Tooltip label="Follow on Twitter">
-                <ActionIcon
-                  component="a"
-                  href="https://twitter.com/deiucanta"
-                  target="_blank"
-                  sx={{ flex: 1 }}
-                  size="xl"
-                >
-                  <IconBrandTwitter size={20} />
-                </ActionIcon>
-              </Tooltip>
-              <Tooltip label="Give Feedback">
-                <ActionIcon
-                  component="a"
-                  href="https://feedback.chatpad.ai"
-                  onClick={(event) => {
-                    if (window.todesktop) {
-                      event.preventDefault();
-                      window.todesktop.contents.openUrlInBrowser(
-                        "https://feedback.chatpad.ai"
-                      );
-                    }
-                  }}
-                  target="_blank"
-                  sx={{ flex: 1 }}
-                  size="xl"
-                >
-                  <IconMessage size={20} />
-                </ActionIcon>
-              </Tooltip>
+              </Tooltip>  
             </Center>
           </Navbar.Section>
         </Navbar>
