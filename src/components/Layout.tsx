@@ -79,13 +79,6 @@ export function Layout() {
       navbarOffsetBreakpoint="sm"
       navbar={
         <Navbar width={{ md: 300 }} hiddenBreakpoint="md" hidden={!opened}>
-          {isSignedIn() && (<Navbar.Section>
-            <Box sx={{ padding: 4 }}>              
-              <Group position="center">
-                <Text fz="md">Welcome, { msalInstance.getActiveAccount()?.name }</Text>    
-              </Group>
-            </Box>
-          </Navbar.Section>)}
           <Navbar.Section className="app-region-drag">
             <Box
               style={{
@@ -132,6 +125,13 @@ export function Layout() {
               </MediaQuery>
             </Box>
           </Navbar.Section>
+          {isSignedIn() && (<Navbar.Section>
+            <Box sx={{ padding: 4 }}>              
+              <Group position="center">
+                <Text fz="md">Welcome, { msalInstance.getActiveAccount()?.name }</Text>    
+              </Group>
+            </Box>
+          </Navbar.Section>)}
           <Navbar.Section
             sx={(theme) => ({
               padding: rem(4),
