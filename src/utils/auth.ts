@@ -2,8 +2,8 @@ import { PublicClientApplication } from '@azure/msal-browser';
 
 const msalConfig = {
     auth: {
-      clientId: "5e194ae4-b650-4e91-9d30-52fee9c3d242",
-      authority: "https://login.microsoftonline.com/5c5478bb-3813-489e-9c75-b3915e88b59a",
+      clientId: process.env.AZURE_SSO_CLIENT_ID ?? "",
+      authority: process.env.AZURE_SSO_AUTHORITY ?? "",
       redirectUri: "/",
     },
     cache: {
