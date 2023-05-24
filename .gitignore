@@ -3,3 +3,7 @@
 /dist
 notes.txt
 .env
+./src/assets/logo-dark.svg
+./src/assets/logo-light.svg
+./src/assets/logo-minimal-dark.svg
+./src/assets/logo-minimal-light.svg
