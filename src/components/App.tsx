@@ -50,9 +50,9 @@ export function App() {
           theme={{
             colorScheme,
             colors: {
-              expd : ['#e0e8ff', '#b0bfff', '#7f99ff', '#4d76ff', '#1e57fe', '#0745e5', '#003bb3', '#002181', '#000e50', '#000220'],
+              palette : process.env.PALETTE.split(','),
             },
-            primaryColor: "expd",
+            primaryColor: "palette",
             globalStyles: (theme) => ({
               body: {
                 backgroundColor:
