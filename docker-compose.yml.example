@@ -1,0 +1,9 @@
+version: "3"
+services:
+  chatpad:
+    image: chatpad:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ${FAVICON}:/usr/share/nginx/html/favicon.2a2e97fc.png
