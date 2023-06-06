@@ -11,3 +11,13 @@ services:
       - ${COMPANY_LOGO_LIGHT}:/usr/share/nginx/html/logo-light.d0f5791d.svg
       - ${COMPANY_LOGO_MINIMAL_DARK}:/usr/share/nginx/html/logo-minimal-dark.888703f1.svg
       - ${COMPANY_LOGO_MINIMAL_LIGHT}:/usr/share/nginx/html/logo-minimal-light.da7fe65e.svg
+  configserver:
+    image: halverneus/static-file-server:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - FOLDER=/chatpad
+      - CORS=true
+    volumes:
+      - ${CONFIG_PATH}:/chatpad/config.json

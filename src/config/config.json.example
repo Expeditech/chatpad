@@ -1,0 +1,10 @@
+{
+    "OPENAI_KEY": "",
+    "COSMOS_DATABASE_ID": "ChatLogs",
+    "COSMOS_CONTAINER_ID": "ChatLogs",
+    "COSMOS_ENDPOINT": "",
+    "COSMOS_KEY": "",
+    "AZURE_SSO_CLIENT_ID": "",
+    "AZURE_SSO_AUTHORITY": "",
+    "PALETTE": ""
+}

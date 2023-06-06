@@ -1,25 +1,37 @@
 import { PublicClientApplication } from '@azure/msal-browser';
+import { getConfig } from '../config/ConfigService';
 
 const msalConfig = {
     auth: {
-      clientId: process.env.AZURE_SSO_CLIENT_ID ?? "",
-      authority: process.env.AZURE_SSO_AUTHORITY ?? "",
+      clientId: "",
+      authority: "",
       redirectUri: "/",
     },
     cache: {
       cacheLocation: 'localStorage',
       storeAuthStateInCookie: true,
     },
-  };
+};
 
-export const msalInstance = new PublicClientApplication(msalConfig);
+let msalInstance : PublicClientApplication;
+
+export function getMsalInstance() : PublicClientApplication{
+  if(!msalInstance) {
+    getConfig().then((config) => {
+      msalConfig.auth.clientId = config.AZURE_SSO_CLIENT_ID;
+      msalConfig.auth.authority = config.AZURE_SSO_AUTHORITY;      
+    })
+    msalInstance = new PublicClientApplication(msalConfig);
+  }
+  return msalInstance;
+}
 
 export function isSignedIn() {
-  return msalInstance.getAllAccounts().length > 0;
+  return getMsalInstance().getAllAccounts().length > 0;  
 }
 
 export function getActiveAccount(){
-    return msalInstance.getActiveAccount();
+    return getMsalInstance().getActiveAccount();
 }
 
 export function getUserLetters(){
