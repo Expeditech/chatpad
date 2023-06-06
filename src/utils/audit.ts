@@ -1,23 +1,38 @@
 import { CosmosClient } from '@azure/cosmos';
 import { Chat, Message, db } from '../db';
+import { getConfig } from '../config/ConfigService';
 
-const options = {
-  endpoint: process.env.COSMOS_ENDPOINT ?? "undefined",
-  key: process.env.COSMOS_KEY,
-  userAgentSuffix: 'ExpdChatPad'
+const auditConfig = {
+  options: {
+    endpoint: "",
+    key: "",
+    userAgentSuffix: 'ExpdChatPad'
+  },
+  databaseId: "",
+  containerId: "",
 };
 
-const databaseId = process.env.COSMOS_DATABASE_ID ?? "undefined"
-const containerId = process.env.COSMOS_CONTAINER_ID ?? "undefined"
+let cosmosInstance : CosmosClient;
 
-const client = new CosmosClient(options);
+export function getCosmosInstance() : CosmosClient{
+  if(!cosmosInstance) {
+    getConfig().then((config) => {
+      auditConfig.options.endpoint = config.COSMOS_ENDPOINT;
+      auditConfig.options.key = config.COSMOS_KEY;
+      auditConfig.databaseId = config.COSMOS_DATABASE_ID;
+      auditConfig.containerId = config.COSMOS_CONTAINER_ID;
+    })
+    cosmosInstance = new CosmosClient(auditConfig.options);
+  }
+  return cosmosInstance;
+}
 
 export async function auditChat(chatId: string) {
   const chat = await loadChatItem(chatId);  
   
-  await client
-  .database(databaseId)
-  .container(containerId)
+  await getCosmosInstance()
+  .database(auditConfig.databaseId)
+  .container(auditConfig.containerId)
   .items
   .upsert(chat) 
 }

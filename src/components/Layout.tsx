@@ -40,7 +40,7 @@ import { DatabaseModal } from "./DatabaseModal";
 import { LogoText, LogoTextLight } from "./Logo";
 import { Prompts } from "./Prompts";
 import { SettingsModal } from "./SettingsModal";
-import { msalInstance, isSignedIn, getActiveAccount } from "../utils/auth";
+import { getMsalInstance, isSignedIn, getActiveAccount } from "../utils/auth";
 import { SSOLogin } from "./SSOLogin";
 
 declare global {
@@ -128,7 +128,7 @@ export function Layout() {
           {isSignedIn() && (<Navbar.Section>
             <Box sx={{ padding: 4 }}>              
               <Group position="center">
-                <Text fz="md">Welcome, { msalInstance.getActiveAccount()?.name }</Text>    
+                <Text fz="md">Welcome, { getMsalInstance().getActiveAccount()?.name }</Text>    
               </Group>
             </Box>
           </Navbar.Section>)}
@@ -245,7 +245,7 @@ export function Layout() {
                     size={20}
                     onClick={async () => {
                       try {
-                        await msalInstance.logoutPopup();
+                        await getMsalInstance().logoutPopup();
                         navigate({ to: '/', replace: true })
                       } catch (error) {
                         console.log(error);
@@ -281,7 +281,7 @@ export function Layout() {
       padding={0}
     >
       {!isSignedIn() && (
-        <SSOLogin msalInstance={msalInstance} />
+        <SSOLogin msalInstance={getMsalInstance()} />
       )}
       <MediaQuery largerThan="md" styles={{ display: "none" }}>
         <Burger
