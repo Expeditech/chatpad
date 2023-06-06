@@ -13,6 +13,8 @@ import {
 import { ChatRoute } from "../routes/ChatRoute";
 import { IndexRoute } from "../routes/IndexRoute";
 import { Layout } from "./Layout";
+import { useEffect, useState } from "react";
+import { getConfig } from "../config/ConfigService";
 
 const history = createHashHistory();
 const location = new ReactLocation({ history });
@@ -30,6 +32,14 @@ export function App() {
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   useHotkeys([["mod+J", () => toggleColorScheme()]]);
+
+  const [pallete, setPallete] = useState("#fff,#d9d9d9");
+
+  useEffect(() => {
+    getConfig().then((data)=>{
+      setPallete(data.PALETTE)
+    })
+  }, [pallete]);
 
   return (
     <Router
@@ -50,7 +60,7 @@ export function App() {
           theme={{
             colorScheme,
             colors: {
-              palette : process.env.PALETTE.split(','),
+              palette: pallete.split(','),
             },
             primaryColor: "palette",
             globalStyles: (theme) => ({
