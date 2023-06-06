@@ -1,5 +1,6 @@
 import Dexie, { Table } from "dexie";
 import "dexie-export-import";
+import { getConfig } from "../config/ConfigService";
 
 export interface Chat {
   id: string;
@@ -47,10 +48,16 @@ export class Database extends Dexie {
       settings: "id",
     });
 
+    let openAiApiKey : string;
+
+    getConfig().then((config) => {
+      openAiApiKey = config.OPENAI_KEY;
+    })
+
     this.on("populate", async () => {
       db.settings.add({
         id: "general",
-        openAiApiKey: (process.env.OPENAI_KEY) ?? "",
+        openAiApiKey: openAiApiKey,
       });
     });
   }
