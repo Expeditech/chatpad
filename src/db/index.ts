@@ -60,6 +60,12 @@ export class Database extends Dexie {
         openAiApiKey: openAiApiKey,
       });
     });
+
+    this.on("ready", async () => {      
+      await db.settings.where("id").equals("general").modify({
+        openAiApiKey: openAiApiKey
+      });
+    });
   }
 }
 

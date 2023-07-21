@@ -6,11 +6,11 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ${FAVICON}:/usr/share/nginx/html/favicon.8c9f2c75.png
-      - ${COMPANY_LOGO_DARK}:/usr/share/nginx/html/logo-dark.0c614d67.svg
-      - ${COMPANY_LOGO_LIGHT}:/usr/share/nginx/html/logo-light.9995db93.svg
-      - ${COMPANY_LOGO_MINIMAL_DARK}:/usr/share/nginx/html/logo-minimal-dark.9b737d7e.svg
-      - ${COMPANY_LOGO_MINIMAL_LIGHT}:/usr/share/nginx/html/logo-minimal-light.d90eabe4.svg
+      - ${FAVICON}:/usr/share/nginx/html/favicon.2a2e97fc.png
+      - ${COMPANY_LOGO_DARK}:/usr/share/nginx/html/logo-dark.905b8ba8.svg
+      - ${COMPANY_LOGO_LIGHT}:/usr/share/nginx/html/logo-light.d0f5791d.svg
+      - ${COMPANY_LOGO_MINIMAL_DARK}:/usr/share/nginx/html/logo-minimal-dark.888703f1.svg
+      - ${COMPANY_LOGO_MINIMAL_LIGHT}:/usr/share/nginx/html/logo-minimal-light.da7fe65e.svg    
   configserver:
     image: halverneus/static-file-server:latest
     restart: unless-stopped
@@ -19,5 +19,6 @@ services:
     environment:
       - FOLDER=/chatpad
       - CORS=true
+      - REFERRERS=${CORS_REFERRERS}
     volumes:
       - ${CONFIG_PATH}:/chatpad/config.json
